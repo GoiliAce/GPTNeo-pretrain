@@ -21,7 +21,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, GPTNeo
 
 def train(
     data_path: str = "total_data.jsonl",
-    base_model: str = "VietAI/gpt-neo-1.3B-vietnamese-news",
+    base_model: str = "EleutherAI/gpt-neo-1.3B",
     output_dir: str = "./chat-gpt-neo-1.3B",
     # base_model: str = "VietAI/gpt-j-6B-vietnamese-news",
     # output_dir: str = "./chat-gpt-j-6B-1e",
