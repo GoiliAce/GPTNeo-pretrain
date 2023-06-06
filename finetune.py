@@ -106,13 +106,13 @@ def train(
     if load_in_8bit: bf16 = False # nếu load 8 bit thì buộc phải dùng bf16
     device_map = {"": int(os.environ.get("CUDA_DEVICE") or 0)}
     world_size = int(os.environ.get("WORLD_SIZE", 1))
-    ddp = world_size != 1
+    ddp = world_size = 2
 
     if ddp: # huấn luyện đa GPUs
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         gradient_accumulation_steps = gradient_accumulation_steps // world_size
         
-    modelconfig = AutoConfig.from_pretrained(base_model, cache_dir="./cache")
+    modelconfig = AutoConfig.from_pretrained(base_model)
 
     model = RwkvForCausalLM(config = modelconfig)
     
