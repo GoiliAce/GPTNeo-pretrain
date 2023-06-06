@@ -17,7 +17,7 @@ from peft import (
     prepare_model_for_int8_training,
     set_peft_model_state_dict,
 )
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, GPTNeoForCausalLM
 
 def train(
     data_path: str = "./data/vi_merged.jsonl",
@@ -111,13 +111,11 @@ def train(
     if ddp: # huấn luyện đa GPUs
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         gradient_accumulation_steps = gradient_accumulation_steps // world_size
+        
+    modelconfig = AutoConfig.from_pretrained(base_model)
 
-    model = AutoModelForCausalLM.from_pretrained(
-        base_model,
-        load_in_8bit=load_in_8bit,
-        torch_dtype=torch.float16,
-        device_map=device_map,
-    )
+    model = GPTNeoForCausalLM(config = config)
+    
 
     if finetune_method == "lora":
         print(model.state_dict) # in ra model state để lựa chọn cho lora
@@ -149,8 +147,8 @@ def train(
         full_prompt = generate_prompt(data_point)
         return tokenize(full_prompt)
 
-    model = prepare_model_for_int8_training(model)
-    model = get_peft_model(model, config)
+    # model = prepare_model_for_int8_training(model)
+    # model = get_peft_model(model, config)
 
     if data_path.endswith(".jsonl"):
         data = load_dataset("json", data_files=data_path)
