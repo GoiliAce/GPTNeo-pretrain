@@ -17,11 +17,11 @@ from peft import (
     prepare_model_for_int8_training,
     set_peft_model_state_dict,
 )
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, GPTNeoForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, GPTNeoForCausalLM, RwkvForCausalLM
 
 def train(
     data_path: str = "total_data.jsonl",
-    base_model: str = "EleutherAI/gpt-neo-1.3B",
+    base_model: str = "RWKV/rwkv-4-169m-pile",
     output_dir: str = "./chat-gpt-neo-1.3B",
     # base_model: str = "VietAI/gpt-j-6B-vietnamese-news",
     # output_dir: str = "./chat-gpt-j-6B-1e",
@@ -114,7 +114,7 @@ def train(
         
     modelconfig = AutoConfig.from_pretrained(base_model, cache_dir="./cache")
 
-    model = GPTNeoForCausalLM(config = modelconfig)
+    model = RwkvForCausalLM(config = modelconfig)
     
 
     if finetune_method == "lora":
