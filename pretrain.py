@@ -95,6 +95,10 @@ args = TrainingArguments(
     save_steps=5_000,
     fp16=True,
     push_to_hub=False,
+    # setting for multi gpus
+    # fp16_full_eval=True,
+    # dataloader_num_workers=4,
+    #
     report_to="none"
 )
 
