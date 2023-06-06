@@ -112,7 +112,7 @@ def train(
         device_map = {"": int(os.environ.get("LOCAL_RANK") or 0)}
         gradient_accumulation_steps = gradient_accumulation_steps // world_size
         
-    modelconfig = AutoConfig.from_pretrained(base_model)
+    modelconfig = AutoConfig.from_pretrained(base_model, cache_dir="./cache")
 
     model = GPTNeoForCausalLM(config = modelconfig)
     
