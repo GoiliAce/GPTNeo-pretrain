@@ -114,7 +114,7 @@ def train(
         
     modelconfig = AutoConfig.from_pretrained(base_model)
 
-    model = RwkvForCausalLM(config = modelconfig
+    model = RwkvForCausalLM(config = modelconfig,
                             torch_dtype=torch.float16,
                             device_map=device_map,)
     
