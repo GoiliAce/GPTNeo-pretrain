@@ -117,8 +117,6 @@ def train(
     model = RwkvForCausalLM(config = modelconfig)
     
 
-    if finetune_method == "lora":
-        print(model.state_dict) # in ra model state để lựa chọn cho lora
 
     tokenizer = AutoTokenizer.from_pretrained(base_model)
     tokenizer.pad_token_id = 0 # unk. we want this to be different from the eos token
@@ -218,7 +216,6 @@ def train(
             tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
         ),
     )
-    model.config.use_cache = False
 
     old_state_dict = model.state_dict
     model.state_dict = (
