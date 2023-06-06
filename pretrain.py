@@ -68,7 +68,7 @@ config = AutoConfig.from_pretrained(
     eos_token_id=tokenizer.eos_token_id,
 )
 
-model = RwkvForCausalLM(config)
+model = GPT2LMHeadModel(config)
 model_size = sum(t.numel() for t in model.parameters())
 print(f"GPT-2 size: {model_size/1000**2:.1f}M parameters")
 
