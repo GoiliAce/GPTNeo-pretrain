@@ -20,7 +20,7 @@ from peft import (
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, GPTNeoForCausalLM
 
 def train(
-    data_path: str = "./data/vi_merged.jsonl",
+    data_path: str = "total_data.jsonl",
     base_model: str = "VietAI/gpt-neo-1.3B-vietnamese-news",
     output_dir: str = "./chat-gpt-neo-1.3B",
     # base_model: str = "VietAI/gpt-j-6B-vietnamese-news",
@@ -236,7 +236,7 @@ def train(
 
 from prompt import make_prompt
 def generate_prompt(data_point):
-    question = data_point["prompt"].strip()
+    question = data_point["instruction"].strip()
     answer = data_point["response"].strip()
     return f"{make_prompt(question)}\n{answer}"
 
