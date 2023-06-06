@@ -23,7 +23,7 @@ raw_datasets
 
 from transformers import AutoTokenizer
 
-context_length = 512
+context_length = 256
 tokenizer = AutoTokenizer.from_pretrained("sgugger/rwkv-430M-pile")
 
 outputs = tokenizer(
