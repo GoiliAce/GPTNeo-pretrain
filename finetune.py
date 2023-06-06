@@ -187,7 +187,7 @@ def train(
 
 
     training_args = transformers.TrainingArguments(
-            fp16=True
+            fp16=True,
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
             warmup_steps=100,
