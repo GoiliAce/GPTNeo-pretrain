@@ -102,7 +102,7 @@ def train(
         base_model
     ), "Please specify a --base_model, e.g. --base_model='VietAI/gpt-j-6B-vietnamese-news'"
 
-    gradient_accumulation_steps = batch_size // micro_batch_size
+    gradient_accumulation_steps = batch_size // micro_batch_size*2
     if load_in_8bit: bf16 = False # nếu load 8 bit thì buộc phải dùng bf16
     device_map = {"": int(os.environ.get("CUDA_DEVICE") or 0)}
     world_size = int(os.environ.get("WORLD_SIZE", 1))
