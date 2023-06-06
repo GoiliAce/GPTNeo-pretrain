@@ -147,8 +147,8 @@ def train(
         full_prompt = generate_prompt(data_point)
         return tokenize(full_prompt)
 
-    model = prepare_model_for_int8_training(model)
-    model = get_peft_model(model, config)
+    # model = prepare_model_for_int8_training(model)
+    # model = get_peft_model(model, config)
 
     # if data_path.endswith(".jsonl"):
     data = load_dataset("json", data_files=data_path)
