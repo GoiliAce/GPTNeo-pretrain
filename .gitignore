@@ -1,0 +1,9 @@
+data/vi_merged.jsonl
+.chatbot.py.swp
+wandb/
+chat-gpt*
+nohup.out
+__pycache__/
+env
+js/
+out/
