@@ -74,7 +74,7 @@ from transformers import Trainer, TrainingArguments
 
 args = TrainingArguments(
     output_dir="codeparrot-ds",
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=6,
     per_device_eval_batch_size=1,
     evaluation_strategy="steps",
     eval_steps=5_000,
