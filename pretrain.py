@@ -100,7 +100,6 @@ args = TrainingArguments(
 
 trainer = Trainer(
     model=model,
-    tokenizer=tokenizer,
     args=args,
     data_collator=data_collator,
     train_dataset=tokenized_datasets["train"],
