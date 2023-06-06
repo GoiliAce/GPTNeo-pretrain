@@ -70,37 +70,37 @@ def train(
         f"resume_from_checkpoint: {resume_from_checkpoint}\n"
     )
 
-    if finetune_method == "lora":
-        config = LoraConfig(
-            r=lora_r,
-            lora_alpha=lora_alpha,
-            target_modules=lora_target_modules.split(), # phân tách str thành list
-            lora_dropout=lora_dropout,
-            bias="none",
-            task_type=TaskType.CAUSAL_LM,
-        )
-        print(
-            f"Training LoRA model with params:\n"
-            f"lora_r: {lora_r}\n"
-            f"lora_alpha: {lora_alpha}\n"
-            f"lora_dropout: {lora_dropout}\n"
-            f"lora_target_modules: {lora_target_modules}\n"
-        )
-    elif finetune_method == "prefix":
-        config = PrefixTuningConfig(
-            task_type=TaskType.CAUSAL_LM,
-            num_virtual_tokens=num_virtual_tokens
-        )
-        print(
-            f"Training Prefix-tuning model with params:\n"
-            f"num_virtual_tokens: {num_virtual_tokens}\n"
-        )
-    else:
-        assert False, "Hiện tại chỉ hỗ trợ lora và prefix tuning"
+    # if finetune_method == "lora":
+    #     config = LoraConfig(
+    #         r=lora_r,
+    #         lora_alpha=lora_alpha,
+    #         target_modules=lora_target_modules.split(), # phân tách str thành list
+    #         lora_dropout=lora_dropout,
+    #         bias="none",
+    #         task_type=TaskType.CAUSAL_LM,
+    #     )
+    #     print(
+    #         f"Training LoRA model with params:\n"
+    #         f"lora_r: {lora_r}\n"
+    #         f"lora_alpha: {lora_alpha}\n"
+    #         f"lora_dropout: {lora_dropout}\n"
+    #         f"lora_target_modules: {lora_target_modules}\n"
+    #     )
+    # elif finetune_method == "prefix":
+    #     config = PrefixTuningConfig(
+    #         task_type=TaskType.CAUSAL_LM,
+    #         num_virtual_tokens=num_virtual_tokens
+    #     )
+    #     print(
+    #         f"Training Prefix-tuning model with params:\n"
+    #         f"num_virtual_tokens: {num_virtual_tokens}\n"
+    #     )
+    # else:
+    #     assert False, "Hiện tại chỉ hỗ trợ lora và prefix tuning"
 
-    assert (
-        base_model
-    ), "Please specify a --base_model, e.g. --base_model='VietAI/gpt-j-6B-vietnamese-news'"
+    # assert (
+    #     base_model
+    # ), "Please specify a --base_model, e.g. --base_model='VietAI/gpt-j-6B-vietnamese-news'"
 
     gradient_accumulation_steps = batch_size // micro_batch_size
     if load_in_8bit: bf16 = False # nếu load 8 bit thì buộc phải dùng bf16
@@ -150,30 +150,30 @@ def train(
     # model = prepare_model_for_int8_training(model)
     # model = get_peft_model(model, config)
 
-    if data_path.endswith(".jsonl"):
-        data = load_dataset("json", data_files=data_path)
-    else:
-        data = load_dataset(data_path)
+    # if data_path.endswith(".jsonl"):
+    data = load_dataset("json", data_files=data_path)
+    # else:
+    #     data = load_dataset(data_path)
 
-    if resume_from_checkpoint:
-        # Check the available weights and load them
-        checkpoint_name = os.path.join(
-            resume_from_checkpoint, "pytorch_model.bin"
-        )  # Full checkpoint
-        if not os.path.exists(checkpoint_name):
-            checkpoint_name = os.path.join(
-                resume_from_checkpoint, "adapter_model.bin"
-            )  # only LoRA model - LoRA config above has to fit
-            resume_from_checkpoint = (
-                False  # So the trainer won't try loading its state
-            )
-        # The two files above have a different name depending on how they were saved, but are actually the same.
-        if os.path.exists(checkpoint_name):
-            print(f"Restarting from {checkpoint_name}")
-            adapters_weights = torch.load(checkpoint_name)
-            model = set_peft_model_state_dict(model, adapters_weights)
-        else:
-            print(f"Checkpoint {checkpoint_name} not found")
+    # if resume_from_checkpoint:
+    #     # Check the available weights and load them
+    #     checkpoint_name = os.path.join(
+    #         resume_from_checkpoint, "pytorch_model.bin"
+    #     )  # Full checkpoint
+    #     if not os.path.exists(checkpoint_name):
+    #         checkpoint_name = os.path.join(
+    #             resume_from_checkpoint, "adapter_model.bin"
+    #         )  # only LoRA model - LoRA config above has to fit
+    #         resume_from_checkpoint = (
+    #             False  # So the trainer won't try loading its state
+    #         )
+    #     # The two files above have a different name depending on how they were saved, but are actually the same.
+    #     if os.path.exists(checkpoint_name):
+    #         print(f"Restarting from {checkpoint_name}")
+    #         adapters_weights = torch.load(checkpoint_name)
+    #         model = set_peft_model_state_dict(model, adapters_weights)
+    #     else:
+    #         print(f"Checkpoint {checkpoint_name} not found")
 
     # Be more transparent about the % of trainable params.
 
