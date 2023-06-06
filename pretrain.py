@@ -24,7 +24,7 @@ raw_datasets
 from transformers import AutoTokenizer
 
 context_length = 256
-tokenizer = AutoTokenizer.from_pretrained("sgugger/rwkv-430M-pile")
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
 outputs = tokenizer(
     raw_datasets["train"][:2]["content"],
@@ -61,7 +61,7 @@ tokenized_datasets
 from transformers import AutoTokenizer, GPT2LMHeadModel, AutoConfig, RwkvForCausalLM
 
 config = AutoConfig.from_pretrained(
-    "sgugger/rwkv-430M-pile",
+    "gpt2",
     vocab_size=len(tokenizer),
     n_ctx=context_length,
     bos_token_id=tokenizer.bos_token_id,
@@ -100,6 +100,7 @@ args = TrainingArguments(
 
 trainer = Trainer(
     model=model,
+    tokenizer=tokenizer,
     args=args,
     data_collator=data_collator,
     train_dataset=tokenized_datasets["train"],
