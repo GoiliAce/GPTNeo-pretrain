@@ -74,12 +74,12 @@ from transformers import Trainer, TrainingArguments
 
 args = TrainingArguments(
     output_dir="codeparrot-ds",
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=4,
     per_device_eval_batch_size=1,
     evaluation_strategy="steps",
     eval_steps=5_000,
     logging_steps=5_000,
-    gradient_accumulation_steps=2,
+    gradient_accumulation_steps=256,
     num_train_epochs=1,
     weight_decay=0.1,
     warmup_steps=1_000,
