@@ -114,7 +114,9 @@ def train(
         
     modelconfig = AutoConfig.from_pretrained(base_model)
 
-    model = RwkvForCausalLM(config = modelconfig)
+    model = RwkvForCausalLM(config = modelconfig
+                            torch_dtype=torch.float16,
+                            device_map=device_map,)
     
 
 
@@ -185,8 +187,7 @@ def train(
 
 
     training_args = transformers.TrainingArguments(
-            fp16=(not bf16), # tốt cho GPUs đời cũ và training 8-bit
-            bf16=bf16, # tốt cho GPUs đời mới và không dùng 8-bit
+            fp16=True
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
             warmup_steps=100,
