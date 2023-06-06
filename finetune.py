@@ -114,7 +114,7 @@ def train(
         
     modelconfig = AutoConfig.from_pretrained(base_model)
 
-    model = GPTNeoForCausalLM(config = config)
+    model = GPTNeoForCausalLM(config = modelconfig)
     
 
     if finetune_method == "lora":
